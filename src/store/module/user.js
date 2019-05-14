@@ -9,14 +9,10 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
-    userName: '',
-    userId: '',
-    avatorImgPath: '',
-    token: getToken(),
+    userInfo: {},
     access: '',
     hasGetInfo: false,
     unreadCount: 0,
@@ -26,21 +22,8 @@ export default {
     messageContentStore: {}
   },
   mutations: {
-    setAvator (state, avatorPath) {
-      state.avatorImgPath = avatorPath
-    },
-    setUserId (state, id) {
-      state.userId = id
-    },
-    setUserName (state, name) {
-      state.userName = name
-    },
-    setAccess (state, access) {
-      state.access = access
-    },
-    setToken (state, token) {
-      state.token = token
-      setToken(token)
+    setUserInfo (state, user) {
+      state.userInfo = user
     },
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
@@ -81,9 +64,11 @@ export default {
           userName,
           password
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
-          resolve()
+          if (res.data.retCode === '000000') {
+            resolve()
+          } else {
+            reject(res.data.retMsg)
+          }
         }).catch(err => {
           reject(err)
         })
@@ -92,9 +77,9 @@ export default {
     // 退出登录
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
+        logout().then(() => {
+          commit('setUserInfo', {})
+          commit('setHasGetInfo', false)
           resolve()
         }).catch(err => {
           reject(err)
@@ -106,15 +91,12 @@ export default {
       })
     },
     // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
+    getUserInfo ({ commit }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
+          getUserInfo().then(res => {
+            const data = res.data.data
+            commit('setUserInfo', data)
             commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {

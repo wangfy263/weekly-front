@@ -5,7 +5,7 @@
         <Card :bordered="false">
             <p slot="title">参与项目情况</p>
             <p>
-                <FormItem label="项目类型" prop="project_type">
+                <FormItem label="项目类型" prop="project.type">
                     <Input v-model="formValidate.project.type" placeholder="输入项目类型" :maxlength="10"/>
                 </FormItem>
                 <FormItem label="归属分支" prop="branch">
@@ -117,7 +117,7 @@
                         <Option value="2">能力开放</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="协助分支" prop="branch">
+                <FormItem label="协助分支" prop="branch_id">
                     <Select v-model="formValidate.assist.branch_id" placeholder="选择分支">
                         <Option value="1">移动总部</Option>
                         <Option value="2">北京电信</Option>
@@ -142,6 +142,10 @@
             </p>
         </Card>
     </Row>
+    <Divider />
+    <Row>
+      <Button type="success">保存</Button>
+    </Row>
     </Form>
   </div>
 </template>
@@ -155,7 +159,7 @@ export default {
       formValidate: {
         project: {
           type: '',
-          branch: 0,
+          branch: '1',
           name: '',
           state: '',
           next_work: ''
@@ -184,28 +188,31 @@ export default {
         }
       },
       ruleValidate: {
-        project_type: [
+        'project.type': [
           { required: true, message: '项目类型不能为空', trigger: 'blur' }
         ],
-        branch: [
+        'project.branch': [
           { required: true, message: '请选择分支', trigger: 'change' }
         ],
-        project_name: [
+        'project.name': [
           { required: true, message: '请填写项目名称', trigger: 'blur' }
         ],
-        project_state: [
+        'project.state': [
           { required: true, message: '请选择目前阶段', trigger: 'change' }
         ],
-        next_work: [
+        'project.next_work': [
           { required: true, message: '请填写下一步计划', trigger: 'blur' }
         ],
-        work_type: [
+        'summarize.project_name': [
+          { required: true, message: '请填写项目名称', trigger: 'blur' }
+        ],
+        'summarize.work_type': [
           { required: true, message: '请填写工作类型', trigger: 'blur' }
         ],
-        weekly_work: [
+        'summarize.weekly_work': [
           { required: true, message: '请填写本周工作总结', trigger: 'blur' }
         ],
-        next_weekly_work: [
+        'summarize.next_weekly_work': [
           { required: true, message: '请填写下周工作计划', trigger: 'blur' }
         ]
       }

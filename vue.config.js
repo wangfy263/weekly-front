@@ -41,7 +41,7 @@ module.exports = {
     port: '8090',
     proxy: {
       '/staff': {
-        target: 'http://localhost:3000'
+        target: 'http://47.104.199.74:8002'
       }
     }
   }

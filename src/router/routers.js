@@ -66,13 +66,13 @@ export default [
       component: () => import('@/page/weekly/fill')
     },
     {
-      path: '/fill1',
-      name: 'fill1',
+      path: '/export',
+      name: 'export',
       meta: {
         icon: 'md-arrow-dropdown-circle',
         title: '周报导出'
       },
-      component: () => import('@/page/weekly/fill')
+      component: () => import('@/page/weekly/export')
     }]
   }
 ]

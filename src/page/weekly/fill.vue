@@ -8,7 +8,7 @@
                 <FormItem label="项目类型" prop="project.type">
                     <Input v-model="formValidate.project.type" placeholder="输入项目类型" :maxlength="10"/>
                 </FormItem>
-                <FormItem label="归属分支" prop="branch">
+                <FormItem label="归属分支" prop="project.branch">
                     <Select v-model="formValidate.project.branch" placeholder="选择分支">
                         <Option value="1">移动总部</Option>
                         <Option value="2">北京电信</Option>
@@ -24,16 +24,16 @@
                         <Option value="12">安徽联通</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="项目名称" prop="project_name">
+                <FormItem label="项目名称" prop="project.name">
                     <Input v-model="formValidate.project.name" placeholder="输入项目名称" :maxlength="20"/>
                 </FormItem>
-                <FormItem label="目前阶段" prop="project_state">
+                <FormItem label="目前阶段" prop="project.state">
                     <Select v-model="formValidate.project.state" placeholder="选择项目状态">
                         <Option value="1">正常</Option>
                         <Option value="2">紧急</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="下一步计划" prop="next_work">
+                <FormItem label="下一步计划" prop="project.next_work">
                     <Input v-model="formValidate.project.next_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="200"/>
                 </FormItem>
             </p>
@@ -44,16 +44,16 @@
         <Card :bordered="false">
             <p slot="title">个人总结部分</p>
             <p>
-                <FormItem label="项目名称" prop="project_name">
+                <FormItem label="项目名称" prop="summarize.project_name">
                     <Input v-model="formValidate.summarize.project_name" placeholder="输入项目名称" :maxlength="20"/>
                 </FormItem>
-                <FormItem label="工作类别" prop="work_type">
+                <FormItem label="工作类别" prop="summarize.work_type">
                     <Input v-model="formValidate.summarize.work_type" placeholder="开发、设计、测试、部署、文档"  :maxlength="10"/>
                 </FormItem>
-                <FormItem label="本周工作" prop="weekly_work">
+                <FormItem label="本周工作" prop="summarize.weekly_work">
                     <Input v-model="formValidate.summarize.weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250"/>
                 </FormItem>
-                <FormItem label="下周计划" prop="next_weekly_work">
+                <FormItem label="下周计划" prop="summarize.next_weekly_work">
                     <Input v-model="formValidate.summarize.next_weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250" />
                 </FormItem>
             </p>
@@ -144,12 +144,13 @@
     </Row>
     <Divider />
     <Row>
-      <Button type="success">保存</Button>
+      <Button type="success" @click="save('formValidate')">保存</Button>
     </Row>
     </Form>
   </div>
 </template>
 <script>
+import { saveReport } from '@/api/weekly'
 export default {
   name: 'home',
   components: {
@@ -220,6 +221,21 @@ export default {
   },
   mounted () {
     //
+  },
+  methods: {
+    save (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          saveReport(this.formValidate).then(res => {
+            if (res.data.retCode === '000000') {
+              this.$Message.success('Success!')
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
 }
 </script>

@@ -95,10 +95,12 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo().then(res => {
-            const data = res.data.data
-            commit('setUserInfo', data)
-            commit('setHasGetInfo', true)
-            resolve(data)
+            if (res.data.retCode === '000000') {
+              const data = res.data.data
+              commit('setUserInfo', data)
+              commit('setHasGetInfo', true)
+            }
+            resolve(res)
           }).catch(err => {
             reject(err)
           })

@@ -13,7 +13,7 @@ export default {
         if (res.data.retCode === '000000') {
           this.$Spin.hide()
           this.$Message.success('导出成功!')
-          // window.location.href = `/${res.data.excelName}`
+          window.open(`/${res.data.data.excelName}`, 'download')
         }
       }).catch(e => {
         this.$Spin.hide()

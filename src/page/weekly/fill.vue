@@ -1,94 +1,177 @@
 <template>
   <div>
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
+    <Form ref="formValidate" :model="formValidate" :label-width="120" label-position="left" inline>
     <Row>
         <Card :bordered="false">
-            <p slot="title">参与项目情况</p>
-            <p>
-                <FormItem label="项目类型" prop="project.type">
-                    <Input v-model="formValidate.project.type" placeholder="输入项目类型" :maxlength="10"/>
-                </FormItem>
-                <FormItem label="归属分支" prop="project.branch">
-                    <Select v-model="formValidate.project.branch" placeholder="选择分支">
-                        <Option value="1">移动总部</Option>
-                        <Option value="2">北京电信</Option>
-                        <Option value="3">北京联通</Option>
-                        <Option value="4">天津电信</Option>
-                        <Option value="5">山西移动</Option>
-                        <Option value="6">山西电信</Option>
-                        <Option value="7">陕西移动</Option>
-                        <Option value="8">吉林电信</Option>
-                        <Option value="9">吉林移动</Option>
-                        <Option value="10">黑龙江移动</Option>
-                        <Option value="11">安徽移动</Option>
-                        <Option value="12">安徽联通</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="项目名称" prop="project.name">
-                    <Input v-model="formValidate.project.name" placeholder="输入项目名称" :maxlength="20"/>
-                </FormItem>
-                <FormItem label="目前阶段" prop="project.state">
-                    <Select v-model="formValidate.project.state" placeholder="选择项目状态">
-                        <Option value="1">正常</Option>
-                        <Option value="2">紧急</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="下一步计划" prop="project.next_work">
-                    <Input v-model="formValidate.project.next_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="200"/>
-                </FormItem>
+            <p slot="title">参与项目情况 <Icon type="ios-add-circle-outline" size="20" @click="addContent('project')"/></p>
+            <p v-for="(item, index) in formValidate.project"
+               :key="index">
+              <Row>
+                <Col span="12">
+                  <FormItem
+                    :prop="'project.' + index + '.type'"
+                    :rules="{required: true, message: '项目类型不能为空', trigger: 'blur'}"
+                    label="项目类型"
+                  >
+                      <Input v-model="item.type" placeholder="输入项目类型" :maxlength="10"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem
+                    label="归属分支"
+                    :prop="'project.' + index + '.branch'"
+                    :rules="{required: true, message: '请选择分支', trigger: 'change'}"
+                    >
+                      <Select v-model="item.branch" placeholder="选择分支">
+                          <Option value="1">移动总部</Option>
+                          <Option value="2">北京电信</Option>
+                          <Option value="3">北京联通</Option>
+                          <Option value="4">天津电信</Option>
+                          <Option value="5">山西移动</Option>
+                          <Option value="6">山西电信</Option>
+                          <Option value="7">陕西移动</Option>
+                          <Option value="8">吉林电信</Option>
+                          <Option value="9">吉林移动</Option>
+                          <Option value="10">黑龙江移动</Option>
+                          <Option value="11">安徽移动</Option>
+                          <Option value="12">安徽联通</Option>
+                      </Select>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem
+                    label="项目名称"
+                    :prop="'project.' + index + '.name'"
+                    :rules="{required: true, message: '请选择分支', trigger: 'change'}"
+                    >
+                      <Input v-model="item.name" placeholder="输入项目名称" :maxlength="20"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem
+                    label="目前阶段"
+                    :prop="'project.' + index + '.state'"
+                    :rules="{required: true, message: '请选择目前阶段', trigger: 'change'}">
+                      <Select v-model="item.state" placeholder="选择项目状态">
+                          <Option value="1">正常</Option>
+                          <Option value="2">紧急</Option>
+                      </Select>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem
+                    label="下一步计划"
+                    :prop="'project.' + index + '.next_work'"
+                    :rules="{required: true, message: '请填写下一步计划', trigger: 'blur'}">
+                      <Input v-model="item.next_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something ..." :maxlength="200"/>
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row type="flex" justify="end" class="code-row-bg" v-show="index !== 0">
+                  <Col span="2"><Button type="error" @click="del('project')">删除</Button></Col>
+              </Row>
+              <Divider v-show="index !== formValidate.project.length-1" />
             </p>
         </Card>
     </Row>
     <Divider />
     <Row>
         <Card :bordered="false">
-            <p slot="title">个人总结部分</p>
-            <p>
-                <FormItem label="项目名称" prop="summarize.project_name">
-                    <Input v-model="formValidate.summarize.project_name" placeholder="输入项目名称" :maxlength="20"/>
+            <p slot="title">个人总结部分 <Icon type="ios-add-circle-outline" size="20" @click="addContent('summarize')"/></p>
+            <p v-for="(item, index) in formValidate.summarize"
+               :key="index">
+              <Row>
+                <Col span="12">
+                <FormItem
+                  label="项目名称"
+                  :prop="'summarize.' + index + '.project_name'"
+                  :rules="{required: true, message: '请选择分支', trigger: 'change'}">
+                    <Input v-model="item.project_name" placeholder="输入项目名称" :maxlength="20"/>
                 </FormItem>
-                <FormItem label="工作类别" prop="summarize.work_type">
-                    <Input v-model="formValidate.summarize.work_type" placeholder="开发、设计、测试、部署、文档"  :maxlength="10"/>
+                </Col>
+                <Col span="12">
+                <FormItem
+                  label="工作类别"
+                  :prop="'summarize.' + index + '.work_type'"
+                  :rules="{required: true, message: '请填写工作类型', trigger: 'blur'}"
+                  >
+                    <Input v-model="item.work_type" placeholder="开发、设计、测试、部署、文档"  :maxlength="10"/>
                 </FormItem>
-                <FormItem label="本周工作" prop="summarize.weekly_work">
-                    <Input v-model="formValidate.summarize.weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250"/>
+                </Col>
+                <Col span="12">
+                <FormItem
+                  label="本周工作"
+                  :prop="'summarize.'+index+'.weekly_work'"
+                  :rules="{required: true, message: '请填写本周工作总结', trigger: 'blur'}">
+                    <Input v-model="item.weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250"/>
                 </FormItem>
-                <FormItem label="下周计划" prop="summarize.next_weekly_work">
-                    <Input v-model="formValidate.summarize.next_weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250" />
+                </Col>
+                <Col span="12">
+                <FormItem
+                  label="下周计划"
+                  :prop="'summarize.'+index+'.next_weekly_work'"
+                  :rules="{required: true, message: '请填写下周工作计划', trigger: 'blur'}">
+                    <Input v-model="item.next_weekly_work" type="textarea" :autosize="{minRows: 2,maxRows: 10}" placeholder="Enter something..." :maxlength="250" />
                 </FormItem>
+                </Col>
+              </Row>
+              <Row type="flex" justify="end" class="code-row-bg" v-show="index !== 0">
+                  <Col span="2"><Button type="error" @click="del('summarize')">删除</Button></Col>
+              </Row>
+              <Divider v-show="index !== formValidate.summarize.length-1" />
             </p>
         </Card>
     </Row>
     <Divider />
     <Row>
         <Card :bordered="false">
-            <p slot="title">个人输出物</p>
-            <p>
-                <FormItem label="输出物" prop="article_name">
-                    <Input v-model="formValidate.output.article_name" placeholder="输出物名称" :maxlength="50"/>
+            <p slot="title">个人输出物 <Icon type="ios-add-circle-outline" size="20" @click="addContent('output')"/></p>
+            <p v-for="(item, index) in formValidate.output"
+               :key="index">
+              <Row>
+                <Col span="12">
+                <FormItem label="输出物" >
+                    <Input v-model="item.article_name" placeholder="输出物名称" :maxlength="50"/>
                 </FormItem>
-                <FormItem label="输出物url" prop="article_url">
-                    <Input v-model="formValidate.output.article_url" placeholder="帖子 or SVN地址" :maxlength="100"/>
+                </Col>
+                <Col span="12">
+                <FormItem label="输出物url">
+                    <Input v-model="item.article_url" placeholder="帖子 or SVN地址" :maxlength="100"/>
                 </FormItem>
+                </Col>
+              </Row>
+              <Row type="flex" justify="end" class="code-row-bg">
+                  <Col span="2"><Button type="error" @click="del('output')">删除</Button></Col>
+              </Row>
+              <Divider v-show="index !== formValidate.output.length-1" />
             </p>
         </Card>
     </Row>
     <Divider />
     <Row>
         <Card :bordered="false">
-            <p slot="title">兴趣组部分</p>
-            <p>
-                <FormItem label="兴趣组模块" prop="module">
-                    <Input v-model="formValidate.interest.module" placeholder="兴趣组模块" :maxlength="50"/>
+            <p slot="title">兴趣组部分 <Icon type="ios-add-circle-outline" size="20" @click="addContent('interest')"/></p>
+            <p v-for="(item, index) in formValidate.interest"
+               :key="index">
+              <Row>
+                <Col span="12">
+                <FormItem label="兴趣组模块">
+                    <Input v-model="item.module" placeholder="兴趣组模块" :maxlength="50"/>
                 </FormItem>
-                <FormItem label="技术栈" prop="technic">
-                    <Input v-model="formValidate.interest.technic" placeholder="技术栈" :maxlength="50"/>
+                </Col>
+                <Col span="12">
+                <FormItem label="技术栈">
+                    <Input v-model="item.technic" placeholder="技术栈" :maxlength="50"/>
                 </FormItem>
-                <FormItem label="预计投入（人天）" prop="cost">
-                    <Input v-model="formValidate.interest.cost" placeholder="投入人天" :maxlength="3"/>
+                </Col>
+                <Col span="12">
+                <FormItem label="预计投入（人天）">
+                    <Input v-model="item.cost" placeholder="投入人天" :maxlength="3"/>
                 </FormItem>
-                <FormItem label="投入月份" prop="mouth">
-                    <Select v-model="formValidate.interest.mouth" placeholder="月份">
+                </Col>
+                <Col span="12">
+                <FormItem label="投入月份">
+                    <Select v-model="item.mouth" placeholder="月份">
                         <Option value="1">1</Option>
                         <Option value="2">2</Option>
                         <Option value="3">3</Option>
@@ -103,22 +186,33 @@
                         <Option value="12">12</Option>
                     </Select>
                 </FormItem>
+                </Col>
+              </Row>
+              <Row type="flex" justify="end" class="code-row-bg">
+                  <Col span="2"><Button type="error" @click="del('interest')">删除</Button></Col>
+              </Row>
+              <Divider v-show="index !== formValidate.interest.length-1" />
             </p>
         </Card>
     </Row>
     <Divider />
     <Row>
         <Card :bordered="false">
-            <p slot="title">前端协助部分</p>
-            <p>
-                <FormItem label="归属组别" prop="module">
-                    <Select v-model="formValidate.assist.group_id" placeholder="选择组别">
+            <p slot="title">前端协助部分 <Icon type="ios-add-circle-outline" size="20" @click="addContent('assist')"/></p>
+            <p v-for="(item, index) in formValidate.assist"
+               :key="index">
+              <Row>
+                <Col span="12">
+                <FormItem label="归属组别">
+                    <Select v-model="item.group_id" placeholder="选择组别">
                         <Option value="1">前端</Option>
                         <Option value="2">能力开放</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="协助分支" prop="branch_id">
-                    <Select v-model="formValidate.assist.branch_id" placeholder="选择分支">
+                </Col>
+                <Col span="12">
+                <FormItem label="协助分支">
+                    <Select v-model="item.branch_id" placeholder="选择分支">
                         <Option value="1">移动总部</Option>
                         <Option value="2">北京电信</Option>
                         <Option value="3">北京联通</Option>
@@ -133,12 +227,22 @@
                         <Option value="12">安徽联通</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="解决问题" prop="resolve">
-                    <Input v-model="formValidate.assist.resolve" placeholder="解决问题描述" />
+                </Col>
+                <Col span="12">
+                <FormItem label="解决问题">
+                    <Input v-model="item.resolve" placeholder="解决问题描述" />
                 </FormItem>
-                <FormItem label="帖子地址" prop="url">
-                    <Input v-model="formValidate.assist.url" placeholder="解决问题的记录" />
+                </Col>
+                <Col span="12">
+                <FormItem label="帖子地址">
+                    <Input v-model="item.url" placeholder="解决问题的记录" />
                 </FormItem>
+                </Col>
+              </Row>
+              <Row type="flex" justify="end" class="code-row-bg">
+                  <Col span="2"><Button type="error" @click="del('assist')">删除</Button></Col>
+              </Row>
+              <Divider v-show="index !== formValidate.assist.length-1" />
             </p>
         </Card>
     </Row>
@@ -158,65 +262,52 @@ export default {
   data () {
     return {
       formValidate: {
-        project: {
+        project: [{
           type: '',
-          branch: '1',
+          branch: '',
           name: '',
           state: '',
           next_work: ''
-        },
-        summarize: {
+        }],
+        summarize: [{
           project_name: '',
           work_type: '',
           weekly_work: '',
           next_weekly_work: ''
-        },
-        output: {
-          article_name: '',
-          article_url: ''
-        },
-        interest: {
-          module: '',
-          technic: '',
-          cost: 0,
-          mouth: 5
-        },
-        assist: {
-          branch_id: 1,
-          group_id: 1,
-          resolve: '',
-          url: ''
-        }
-      },
-      ruleValidate: {
-        'project.type': [
-          { required: true, message: '项目类型不能为空', trigger: 'blur' }
-        ],
-        'project.branch': [
-          { required: true, message: '请选择分支', trigger: 'change' }
-        ],
-        'project.name': [
-          { required: true, message: '请填写项目名称', trigger: 'blur' }
-        ],
-        'project.state': [
-          { required: true, message: '请选择目前阶段', trigger: 'change' }
-        ],
-        'project.next_work': [
-          { required: true, message: '请填写下一步计划', trigger: 'blur' }
-        ],
-        'summarize.project_name': [
-          { required: true, message: '请填写项目名称', trigger: 'blur' }
-        ],
-        'summarize.work_type': [
-          { required: true, message: '请填写工作类型', trigger: 'blur' }
-        ],
-        'summarize.weekly_work': [
-          { required: true, message: '请填写本周工作总结', trigger: 'blur' }
-        ],
-        'summarize.next_weekly_work': [
-          { required: true, message: '请填写下周工作计划', trigger: 'blur' }
-        ]
+        }],
+        output: [],
+        interest: [],
+        assist: []
       }
+      // ruleValidate: {
+      //   'project.type': [
+      //     { required: true, message: '项目类型不能为空', trigger: 'blur' }
+      //   ],
+      //   'project.branch': [
+      //     { required: true, message: '请选择分支', trigger: 'change' }
+      //   ],
+      //   'project.name': [
+      //     { required: true, message: '请填写项目名称', trigger: 'blur' }
+      //   ],
+      //   'project.state': [
+      //     { required: true, message: '请选择目前阶段', trigger: 'change' }
+      //   ],
+      //   'project.next_work': [
+      //     { required: true, message: '请填写下一步计划', trigger: 'blur' }
+      //   ],
+      //   'summarize.project_name': [
+      //     { required: true, message: '请填写项目名称', trigger: 'blur' }
+      //   ],
+      //   'summarize.work_type': [
+      //     { required: true, message: '请填写工作类型', trigger: 'blur' }
+      //   ],
+      //   'summarize.weekly_work': [
+      //     { required: true, message: '请填写本周工作总结', trigger: 'blur' }
+      //   ],
+      //   'summarize.next_weekly_work': [
+      //     { required: true, message: '请填写下周工作计划', trigger: 'blur' }
+      //   ]
+      // }
     }
   },
   mounted () {
@@ -235,6 +326,64 @@ export default {
           this.$Message.error('Fail!')
         }
       })
+    },
+    addContent (key) {
+      if (key === 'project' && this.formValidate.project.length < 5) {
+        this.formValidate.project.push({
+          type: '',
+          branch: '',
+          name: '',
+          state: '',
+          next_work: ''
+        })
+      }
+      if (key === 'summarize' && this.formValidate.summarize.length < 5) {
+        this.formValidate.summarize.push({
+          project_name: '',
+          work_type: '',
+          weekly_work: '',
+          next_weekly_work: ''
+        })
+      }
+      if (key === 'output' && this.formValidate.output.length < 5) {
+        this.formValidate.output.push({
+          article_name: '',
+          article_url: ''
+        })
+      }
+      if (key === 'interest' && this.formValidate.interest.length < 5) {
+        this.formValidate.interest.push({
+          module: '',
+          technic: '',
+          cost: 0,
+          mouth: 0
+        })
+      }
+      if (key === 'assist' && this.formValidate.assist.length < 5) {
+        this.formValidate.assist.push({
+          branch_id: 0,
+          group_id: 0,
+          resolve: '',
+          url: ''
+        })
+      }
+    },
+    del (key) {
+      if (key === 'project' && this.formValidate.project.length > 1) {
+        this.formValidate.project.pop()
+      }
+      if (key === 'summarize' && this.formValidate.summarize.length > 1) {
+        this.formValidate.summarize.pop()
+      }
+      if (key === 'output' && this.formValidate.output.length > 0) {
+        this.formValidate.output.pop()
+      }
+      if (key === 'interest' && this.formValidate.interest.length > 0) {
+        this.formValidate.interest.pop()
+      }
+      if (key === 'assist' && this.formValidate.assist.length > 0) {
+        this.formValidate.assist.pop()
+      }
     }
   }
 }

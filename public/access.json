@@ -1,0 +1,5 @@
+{
+  "weekly": ["super_admin", "weekly_staff", "weekly_leader"],
+  "fill": ["super_admin", "weekly_staff"],
+  "export": ["super_admin", "weekly_leader"]
+}

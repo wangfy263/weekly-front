@@ -15,6 +15,7 @@ import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
+import axios from 'axios'
 const { homeName } = config
 
 const closePage = (state, route) => {
@@ -32,10 +33,11 @@ export default {
     homeRoute: {},
     local: localRead('local'),
     errorList: [],
-    hasReadErrorPage: false
+    hasReadErrorPage: false,
+    jsonAccess: {}
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access, state.jsonAccess),
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -85,6 +87,9 @@ export default {
     },
     setHasReadErrorLoggerStatus (state, status = true) {
       state.hasReadErrorPage = status
+    },
+    initAccess (state, access) {
+      state.jsonAccess = access
     }
   },
   actions: {
@@ -100,6 +105,11 @@ export default {
       }
       saveErrorLogger(info).then(() => {
         commit('addError', data)
+      })
+    },
+    loadAccess ({ commit }, payload) {
+      axios.get(`${process.env.BASE_URL}access.json`).then(res => {
+        commit('initAccess', res.data)
       })
     }
   }

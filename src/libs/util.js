@@ -26,11 +26,24 @@ const showThisMenuEle = (item, access) => {
     else return false
   } else return true
 }
+
+const routerAccess = (routers, jsonAccess) => {
+  routers.forEach(item => {
+    if (item.meta && !item.meta.access && jsonAccess[item.name]) {
+      item.meta.access = jsonAccess[item.name]
+    }
+    if (item.children && item.children.length > 1) {
+      item.children = routerAccess(item.children, jsonAccess)
+    }
+  })
+  return routers
+}
 /**
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
  */
-export const getMenuByRouter = (list, access) => {
+export const getMenuByRouter = (routers, access, jsonAccess) => {
+  let list = routerAccess(routers, jsonAccess)
   let res = []
   forEach(list, item => {
     if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
@@ -46,6 +59,7 @@ export const getMenuByRouter = (list, access) => {
       if (showThisMenuEle(item, access)) res.push(obj)
     }
   })
+  console.log(res)
   return res
 }
 

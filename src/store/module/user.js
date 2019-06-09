@@ -25,6 +25,9 @@ export default {
     setUserInfo (state, user) {
       state.userInfo = user
     },
+    setAccess (state, access) {
+      state.access = access
+    },
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
     },
@@ -80,6 +83,7 @@ export default {
         logout().then(() => {
           commit('setUserInfo', {})
           commit('setHasGetInfo', false)
+          commit('setAccess', [])
           resolve()
         }).catch(err => {
           reject(err)
@@ -98,6 +102,7 @@ export default {
             if (res.data.retCode === '000000') {
               const data = res.data.data
               commit('setUserInfo', data)
+              commit('setAccess', data.access)
               commit('setHasGetInfo', true)
             }
             resolve(res)

@@ -279,35 +279,6 @@ export default {
         interest: [],
         assist: []
       }
-      // ruleValidate: {
-      //   'project.type': [
-      //     { required: true, message: '项目类型不能为空', trigger: 'blur' }
-      //   ],
-      //   'project.branch': [
-      //     { required: true, message: '请选择分支', trigger: 'change' }
-      //   ],
-      //   'project.name': [
-      //     { required: true, message: '请填写项目名称', trigger: 'blur' }
-      //   ],
-      //   'project.state': [
-      //     { required: true, message: '请选择目前阶段', trigger: 'change' }
-      //   ],
-      //   'project.next_work': [
-      //     { required: true, message: '请填写下一步计划', trigger: 'blur' }
-      //   ],
-      //   'summarize.project_name': [
-      //     { required: true, message: '请填写项目名称', trigger: 'blur' }
-      //   ],
-      //   'summarize.work_type': [
-      //     { required: true, message: '请填写工作类型', trigger: 'blur' }
-      //   ],
-      //   'summarize.weekly_work': [
-      //     { required: true, message: '请填写本周工作总结', trigger: 'blur' }
-      //   ],
-      //   'summarize.next_weekly_work': [
-      //     { required: true, message: '请填写下周工作计划', trigger: 'blur' }
-      //   ]
-      // }
     }
   },
   mounted () {
@@ -319,7 +290,9 @@ export default {
         if (valid) {
           saveReport(this.formValidate).then(res => {
             if (res.data.retCode === '000000') {
-              this.$Message.success('Success!')
+              this.$Message.success('Success! 你输入的周报成功保存!')
+            } else {
+              this.$Message.error('Error！ 系统错误，保存失败，请联系管理员')
             }
           })
         } else {

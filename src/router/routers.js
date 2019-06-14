@@ -53,14 +53,14 @@ export default [
     name: 'weekly',
     component: Main,
     meta: {
-      icon: 'logo-buffer',
+      icon: 'md-home',
       title: '周报管理'
     },
     children: [{
       path: '/fill',
       name: 'fill',
       meta: {
-        icon: 'md-arrow-dropdown-circle',
+        icon: 'md-create',
         title: '周报录入'
       },
       component: () => import('@/page/weekly/fill')
@@ -69,7 +69,7 @@ export default [
       path: '/export',
       name: 'export',
       meta: {
-        icon: 'md-arrow-dropdown-circle',
+        icon: 'md-download',
         title: '周报导出'
       },
       component: () => import('@/page/weekly/export')

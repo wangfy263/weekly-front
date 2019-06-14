@@ -247,12 +247,34 @@
         </Card>
     </Row>
     <Divider />
-    <Row>
-      <Button type="success" @click="save('formValidate')">保存</Button>
+    <Row class="bottom-row">
+      <Button type="success" class="bottom-button" @click="save('formValidate')">保存周报内容</Button>
+      <span class="message-alert">请填写本周工作内容/下周工作计划，并保存</span>
     </Row>
     </Form>
   </div>
 </template>
+<style>
+.bottom-row {
+  position: absolute;
+  bottom: 0px;
+  left: 256px;
+  background: #F5F7F9;
+  width: 100%;
+  /* border-top: 1px solid #515a6e; */
+}
+.bottom-row .bottom-button {
+  position: relative;
+  bottom: 10px;
+  left: 18px;
+  margin-top: 20px;
+}
+.bottom-row .message-alert {
+  position: relative;
+  left: 55px;
+  /* margin-left: 55px； */
+}
+</style>
 <script>
 import { saveReport } from '@/api/weekly'
 export default {

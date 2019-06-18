@@ -73,6 +73,15 @@ export default [
         title: '周报导出'
       },
       component: () => import('@/page/weekly/export')
+    },
+    {
+      path: '/manage_project',
+      name: 'manage_project',
+      meta: {
+        icon: 'md-download',
+        title: '团队所辖项目管理'
+      },
+      component: () => import('@/page/weekly/managePro')
     }]
   }
 ]

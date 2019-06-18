@@ -1,7 +1,7 @@
 <template>
   <div>
     <Form ref="formValidate" :model="formValidate" :label-width="120" label-position="left" inline>
-    <Row>
+    <Row v-show="formValidate.project.length > 0">
         <Card :bordered="false">
             <p slot="title">参与项目情况 <Icon type="ios-add-circle-outline" size="20" @click="addContent('project')"/></p>
             <p v-for="(item, index) in formValidate.project"
@@ -13,7 +13,7 @@
                     :rules="{required: true, message: '项目类型不能为空', trigger: 'blur'}"
                     label="项目类型"
                   >
-                      <Input v-model="item.type" placeholder="输入项目类型" :maxlength="10"/>
+                      <Input v-model="item.type" placeholder="输入项目类型" :maxlength="10" :disabled="index<length"/>
                   </FormItem>
                 </Col>
                 <Col span="12">
@@ -22,7 +22,7 @@
                     :prop="'project.' + index + '.branch'"
                     :rules="{required: true, message: '请选择分支', trigger: 'change'}"
                     >
-                      <Select v-model="item.branch" placeholder="选择分支">
+                      <Select v-model="item.branch" placeholder="选择分支" :disabled="index <length">
                           <Option value="1">移动总部</Option>
                           <Option value="2">北京电信</Option>
                           <Option value="3">北京联通</Option>
@@ -44,7 +44,7 @@
                     :prop="'project.' + index + '.name'"
                     :rules="{required: true, message: '请选择分支', trigger: 'change'}"
                     >
-                      <Input v-model="item.name" placeholder="输入项目名称" :maxlength="20"/>
+                      <Input v-model="item.name" placeholder="输入项目名称" :maxlength="20" :disabled="index<length"/>
                   </FormItem>
                 </Col>
                 <Col span="12">
@@ -67,14 +67,14 @@
                   </FormItem>
                 </Col>
               </Row>
-              <Row type="flex" justify="end" class="code-row-bg" v-show="index !== 0">
+              <Row type="flex" justify="end" class="code-row-bg" v-show="index >= length">
                   <Col span="2"><Button type="error" @click="del('project')">删除</Button></Col>
               </Row>
               <Divider v-show="index !== formValidate.project.length-1" />
             </p>
         </Card>
     </Row>
-    <Divider />
+    <Divider v-show="formValidate.project.length > 0"/>
     <Row>
         <Card :bordered="false">
             <p slot="title">个人总结部分 <Icon type="ios-add-circle-outline" size="20" @click="addContent('summarize')"/></p>
@@ -276,7 +276,7 @@
 }
 </style>
 <script>
-import { saveReport } from '@/api/weekly'
+import { saveReport, findByUserId } from '@/api/weekly'
 export default {
   name: 'home',
   components: {
@@ -284,13 +284,7 @@ export default {
   data () {
     return {
       formValidate: {
-        project: [{
-          type: '',
-          branch: '',
-          name: '',
-          state: '',
-          next_work: ''
-        }],
+        project: [],
         summarize: [{
           project_name: '',
           work_type: '',
@@ -300,11 +294,12 @@ export default {
         output: [],
         interest: [],
         assist: []
-      }
+      },
+      length: 0
     }
   },
   mounted () {
-    //
+    this.findProject()
   },
   methods: {
     save (name) {
@@ -318,7 +313,7 @@ export default {
             }
           })
         } else {
-          this.$Message.error('Fail!')
+          this.$Message.error('Fail! 个人总结部分为必填内容，请检查是否有遗漏！')
         }
       })
     },
@@ -379,6 +374,15 @@ export default {
       if (key === 'assist' && this.formValidate.assist.length > 0) {
         this.formValidate.assist.pop()
       }
+    },
+    findProject () {
+      findByUserId().then(res => {
+        if (res.data.retCode === '000000') {
+          // let list = res.data.data
+          this.formValidate.project = res.data.data
+          this.length = res.data.data.length
+        }
+      })
     }
   }
 }

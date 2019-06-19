@@ -31,3 +31,27 @@ export const findByUserId = (data) => {
     data
   })
 }
+
+export const saveProject = (data) => {
+  return axios.request({
+    url: '/manageProject/save',
+    method: 'post',
+    data
+  })
+}
+
+export const updateProject = (data) => {
+  return axios.request({
+    url: '/manageProject/update',
+    method: 'post',
+    data
+  })
+}
+
+export const deleteProject = (data) => {
+  return axios.request({
+    url: '/manageProject/delete',
+    method: 'post',
+    data
+  })
+}

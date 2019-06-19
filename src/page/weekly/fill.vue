@@ -42,7 +42,7 @@
                   <FormItem
                     label="项目名称"
                     :prop="'project.' + index + '.name'"
-                    :rules="{required: true, message: '请选择分支', trigger: 'change'}"
+                    :rules="{required: true, message: '请输入项目名称', trigger: 'change'}"
                     >
                       <Input v-model="item.name" placeholder="输入项目名称" :maxlength="20" :disabled="index<length"/>
                   </FormItem>

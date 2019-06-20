@@ -41,6 +41,7 @@ Vue.prototype.$config = config
  */
 importDirective(Vue)
 Vue.directive('clickOutside', clickOutside)
+store.dispatch('getEnums')
 store.dispatch('loadAccess').then(()=>{
   store.dispatch('getUserInfo').then(res => {
     /* eslint-disable no-new */

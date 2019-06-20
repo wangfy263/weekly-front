@@ -10,10 +10,16 @@
                 <Col span="12">
                   <FormItem
                     :prop="'project.' + index + '.type'"
-                    :rules="{required: true, message: '项目类型不能为空', trigger: 'blur'}"
+                    :rules="{required: true, message: '项目类型不能为空', trigger: 'change'}"
                     label="项目类型"
                   >
-                      <Input v-model="item.type" placeholder="输入项目类型" :maxlength="10" :disabled="index<length"/>
+                      <!-- <Input v-model="item.type" placeholder="输入项目类型" :maxlength="10" :disabled="index<length"/> -->
+                      <Select v-model="item.type" placeholder="选择项目类型" :disabled="index<length">
+                        <Option :value="`${option.state_id}`" v-for="(option, ind) in enumerates.proStateEnum" :key="ind">{{option.state_name}}</Option>
+                        <!-- <Option value="1">商务</Option>
+                        <Option value="2">研发</Option>
+                        <Option value="3">培训</Option> -->
+                      </Select>
                   </FormItem>
                 </Col>
                 <Col span="12">
@@ -23,18 +29,7 @@
                     :rules="{required: true, message: '请选择分支', trigger: 'change'}"
                     >
                       <Select v-model="item.branch" placeholder="选择分支" :disabled="index <length">
-                          <Option value="1">移动总部</Option>
-                          <Option value="2">北京电信</Option>
-                          <Option value="3">北京联通</Option>
-                          <Option value="4">天津电信</Option>
-                          <Option value="5">山西移动</Option>
-                          <Option value="6">山西电信</Option>
-                          <Option value="7">陕西移动</Option>
-                          <Option value="8">吉林电信</Option>
-                          <Option value="9">吉林移动</Option>
-                          <Option value="10">黑龙江移动</Option>
-                          <Option value="11">安徽移动</Option>
-                          <Option value="12">安徽联通</Option>
+                          <Option :value="`${option.branch_id}`" v-for="(option, index) in enumerates.branchEnum" :key="index">{{option.branch_name}}</Option>
                       </Select>
                   </FormItem>
                 </Col>
@@ -213,18 +208,7 @@
                 <Col span="12">
                 <FormItem label="协助分支">
                     <Select v-model="item.branch_id" placeholder="选择分支">
-                        <Option value="1">移动总部</Option>
-                        <Option value="2">北京电信</Option>
-                        <Option value="3">北京联通</Option>
-                        <Option value="4">天津电信</Option>
-                        <Option value="5">山西移动</Option>
-                        <Option value="6">山西电信</Option>
-                        <Option value="7">陕西移动</Option>
-                        <Option value="8">吉林电信</Option>
-                        <Option value="9">吉林移动</Option>
-                        <Option value="10">黑龙江移动</Option>
-                        <Option value="11">安徽移动</Option>
-                        <Option value="12">安徽联通</Option>
+                        <Option :value="`${option.branch_id}`" v-for="(option, index) in enumerates.branchEnum" :key="index">{{option.branch_name}}</Option>
                     </Select>
                 </FormItem>
                 </Col>
@@ -277,8 +261,9 @@
 </style>
 <script>
 import { saveReport, findByUserId } from '@/api/weekly'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'home',
+  name: 'fill',
   components: {
   },
   data () {
@@ -298,11 +283,18 @@ export default {
       length: 0
     }
   },
+  computed: {
+    ...mapGetters([
+      'enumerates'
+    ])
+  },
   mounted () {
+    console.log(this.enumerates)
     this.findProject()
   },
   methods: {
     save (name) {
+      console.log(this.formValidate)
       this.$refs[name].validate((valid) => {
         if (valid) {
           saveReport(this.formValidate).then(res => {

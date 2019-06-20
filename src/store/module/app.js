@@ -11,7 +11,8 @@ import {
   localSave,
   localRead
 } from '@/libs/util'
-import { saveErrorLogger } from '@/api/data'
+
+import { saveErrorLogger, getEnumerate } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -34,11 +35,13 @@ export default {
     local: localRead('local'),
     errorList: [],
     hasReadErrorPage: false,
-    jsonAccess: {}
+    jsonAccess: {},
+    enumerates: {}
   },
   getters: {
     menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access, state.jsonAccess),
-    errorCount: state => state.errorList.length
+    errorCount: state => state.errorList.length,
+    enumerates: state => state.enumerates
   },
   mutations: {
     setBreadCrumb (state, route) {
@@ -90,6 +93,9 @@ export default {
     },
     initAccess (state, access) {
       state.jsonAccess = access
+    },
+    initEnumerate (state, enums) {
+      state.enumerates = enums
     }
   },
   actions: {
@@ -110,6 +116,11 @@ export default {
     loadAccess ({ commit }, payload) {
       axios.get(`${process.env.BASE_URL}access.json`).then(res => {
         commit('initAccess', res.data)
+      })
+    },
+    getEnums ({ commit }, payload) {
+      getEnumerate().then(res => {
+        commit('initEnumerate', res.data.data)
       })
     }
   }

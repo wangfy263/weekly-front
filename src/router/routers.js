@@ -78,7 +78,7 @@ export default [
       path: '/manage_project',
       name: 'manage_project',
       meta: {
-        icon: 'md-download',
+        icon: 'ios-albums-outline',
         title: '团队所辖项目管理'
       },
       component: () => import('@/page/weekly/managePro')

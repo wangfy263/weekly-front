@@ -14,9 +14,7 @@
           >
               <!-- <Input v-model="formValidate.type" placeholder="输入项目类型" :maxlength="10"/> -->
               <Select v-model="formValidate.state_id" placeholder="选择项目类型">
-                  <Option value="1">商务</Option>
-                  <Option value="2">研发</Option>
-                  <Option value="3">培训</Option>
+                  <Option :value="`${option.state_id}`" v-for="(option, ind) in enumerates.proStateEnum" :key="ind">{{option.state_name}}</Option>
               </Select>
           </FormItem>
         </Col>
@@ -27,18 +25,7 @@
             :rules="{required: true, message: '请选择分支', trigger: 'change'}"
             >
               <Select v-model="formValidate.branch_id" placeholder="选择分支">
-                  <Option value="1">移动总部</Option>
-                  <Option value="2">北京电信</Option>
-                  <Option value="3">北京联通</Option>
-                  <Option value="4">天津电信</Option>
-                  <Option value="5">山西移动</Option>
-                  <Option value="6">山西电信</Option>
-                  <Option value="7">陕西移动</Option>
-                  <Option value="8">吉林电信</Option>
-                  <Option value="9">吉林移动</Option>
-                  <Option value="10">黑龙江移动</Option>
-                  <Option value="11">安徽移动</Option>
-                  <Option value="12">安徽联通</Option>
+                  <Option :value="`${option.branch_id}`" v-for="(option, index) in enumerates.branchEnum" :key="index">{{option.branch_name}}</Option>
               </Select>
           </FormItem>
         </Col>
@@ -123,6 +110,7 @@
 </style>
 <script>
 import { findProjects, saveProject, updateProject, deleteProject } from '@/api/weekly'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -191,6 +179,11 @@ export default {
         staff_id: ''
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'enumerates'
+    ])
   },
   mounted () {
     this.findProjects()

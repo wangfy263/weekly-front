@@ -49,3 +49,13 @@ export const getTreeSelectData = () => {
     method: 'get'
   })
 }
+
+/**
+ * 查询页面使用的枚举值数据
+ */
+export const getEnumerate = () => {
+  return axios.request({
+    url: 'initEnum',
+    method: 'post'
+  })
+}

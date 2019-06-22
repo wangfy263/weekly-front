@@ -24,3 +24,7 @@ yarn-error.log*
 *.sw*
 
 build/env.js
+
+
+# add by wangfy
+webpack-inspect.js

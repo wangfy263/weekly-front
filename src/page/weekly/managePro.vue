@@ -50,6 +50,7 @@
                   <Option value="3">liule</Option>
                   <Option value="4">chenrr_miso</Option>
                   <Option value="5">liyn_miso</Option>
+                  <Option value="7">liyh_mios</Option>
               </Select>
           </FormItem>
         </Col>

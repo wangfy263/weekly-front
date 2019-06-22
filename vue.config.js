@@ -1,4 +1,5 @@
 const path = require('path')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const resolve = dir => {
   return path.join(__dirname, dir)
@@ -41,19 +42,18 @@ module.exports = {
     port: '8090',
     proxy: {
       '/staff': {
-        // target: 'http://47.104.199.74:8002'
-        target: 'http://localhost:8002'
+        target: 'http://47.104.199.74:8002'
+        // target: 'http://localhost:8002'
+      }
+    }
+  },
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        plugins: [
+          new BundleAnalyzerPlugin()
+        ]
       }
     }
   }
-  // configureWebpack: {
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.json$/,
-  //         loader: 'json-loader'
-  //       }
-  //     ]
-  //   }
-  // }
 }

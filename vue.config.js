@@ -48,7 +48,7 @@ module.exports = {
     }
   }
   // configureWebpack: config => {
-  //   if (process.env.NODE_ENV === 'production') {
+  //   if (process.env.NODE_ENV === 'analysis') {
   //     return {
   //       plugins: [
   //         new BundleAnalyzerPlugin()

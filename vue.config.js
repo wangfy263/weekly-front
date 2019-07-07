@@ -1,5 +1,5 @@
 const path = require('path')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const resolve = dir => {
   return path.join(__dirname, dir)
@@ -46,14 +46,37 @@ module.exports = {
         // target: 'http://localhost:8002'
       }
     }
+  },
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      let optimization = {
+        // runtimeChunk: 'single',
+        splitChunks: {
+          chunks: 'all'
+          // maxInitialRequests: Infinity,
+          // minSize: 20000,
+          // cacheGroups: {
+          //   vendor: {
+          //     test: /[\\/]node_modules[\\/]/,
+          //     name (module) {
+          //       // get the name. E.g. node_modules/packageName/not/this/part.js
+          //       // or node_modules/packageName
+          //       const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+          //       // npm package names are URL-safe, but some servers don't like @ symbols
+          //       return `npm.${packageName.replace('@', '')}`
+          //     }
+          //   }
+          // }
+        }
+      }
+      Object.assign(config, {
+        optimization
+      })
+      return {
+        plugins: [
+          new BundleAnalyzerPlugin()
+        ]
+      }
+    }
   }
-  // configureWebpack: config => {
-  //   if (process.env.NODE_ENV === 'analysis') {
-  //     return {
-  //       plugins: [
-  //         new BundleAnalyzerPlugin()
-  //       ]
-  //     }
-  //   }
-  // }
 }

@@ -1,12 +1,13 @@
 import moment from 'moment'
 
-export const getWeekRange = () => {
-  let start = moment().startOf('week').add(1, 'd').format('MMDD')
-  let end = moment().endOf('week').subtract(1, 'd').format('MMDD')
-  console.log(moment().format('MMDD'))
-  if (moment().format('MMDD') === '0707') {
-    start = '0701'
-    end = '0705'
+export const getWeekRange = (lastN) => {
+  let weekOfday = moment().format('E') // 计算今天是这周第几天
+  let start = moment().subtract(weekOfday - 1, 'days').format('MMDD')
+  let end = moment().add(7 - weekOfday, 'days').format('MMDD')
+  if (lastN && typeof lastN === 'number') {
+    start = moment().subtract(weekOfday - 1, 'days').subtract(lastN, 'weeks').format('MMDD')
+    end = moment().add(7 - weekOfday, 'days').subtract(lastN, 'weeks').format('MMDD')
   }
+  console.log(`${start}-${end}`)
   return `${start}-${end}`
 }

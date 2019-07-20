@@ -8,6 +8,11 @@
         <Option v-for="(item,index) in rangeList" :value="item" :key="index">{{ item }}</Option>
       </Select>
     </p>
+    <p class="mgb-10">选择群组：
+      <Select v-model="groupId" style="width:350px">
+        <Option v-for="(item,index) in groupList" :value="item.group_id" :key="index">{{ item.group_name }}</Option>
+      </Select>
+    </p>
     <p class="mgb-10">导出文件全名：{{fileName}}@{{weekRange}}.xlsx</p>
     <Button type="success" @click="exportExcel()">导出</Button>
   </div>
@@ -19,20 +24,29 @@
 </style>
 
 <script>
-import { exportExcel } from '@/api/weekly'
+import { exportExcel, queryGroups } from '@/api/weekly'
 import { getWeekRange } from '@/libs/myUtils'
 export default {
   data () {
     return {
       fileName: '前端能开@技术栈 研发&工程人员周状态@2019周报@山西@前端1组',
       weekRange: getWeekRange(),
-      rangeList: [getWeekRange(), getWeekRange(1), getWeekRange(2)]
+      rangeList: [getWeekRange(), getWeekRange(1), getWeekRange(2)],
+      groupId: '',
+      groupList: [{ group_id: 0, group_name: '全部' }]
     }
+  },
+  mounted () {
+    this.getGroupList()
   },
   methods: {
     exportExcel () {
       this.$Spin.show()
-      exportExcel({ fileName: this.fileName, week_range: this.weekRange }).then(res => {
+      let param = { fileName: this.fileName, week_range: this.weekRange }
+      if (this.groupId) {
+        param.groupId = this.groupId
+      }
+      exportExcel(param).then(res => {
         if (res.data.retCode === '000000') {
           this.$Spin.hide()
           this.$Message.success('导出成功!')
@@ -40,6 +54,13 @@ export default {
         }
       }).catch(e => {
         this.$Spin.hide()
+      })
+    },
+    getGroupList () {
+      queryGroups({}).then(res => {
+        if (res.data.retCode === '000000') {
+          this.groupList = this.groupList.concat(res.data.data)
+        }
       })
     }
   }

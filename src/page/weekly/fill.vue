@@ -86,11 +86,17 @@
                 </Col>
                 <Col span="12">
                 <FormItem
-                  label="工作类别"
+                  label="项目类别"
                   :prop="'summarize.' + index + '.work_type'"
-                  :rules="{required: true, message: '请填写工作类型', trigger: 'blur'}"
+                  :rules="{required: true, message: '请填写项目类型', trigger: 'blur'}"
                   >
-                    <Input v-model="item.work_type" placeholder="开发、设计、测试、部署、文档"  :maxlength="10"/>
+                    <!-- <Input v-model="item.work_type" placeholder="开发、设计、测试、部署、文档"  :maxlength="10"/> -->
+                    <Select v-model="item.work_type" placeholder="选择项目类型">
+                      <Option :value="`${option.state_id}`" v-for="(option, ind) in enumerates.proStateEnum" :key="ind">{{option.state_name}}</Option>
+                      <!-- <Option value="1">商务</Option>
+                      <Option value="2">研发</Option>
+                      <Option value="3">培训</Option> -->
+                    </Select>
                 </FormItem>
                 </Col>
                 <Col span="12">

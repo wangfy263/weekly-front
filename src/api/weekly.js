@@ -16,6 +16,14 @@ export const exportExcel = (data) => {
   })
 }
 
+export const queryGroups = (data) => {
+  return axios.request({
+    url: 'queryGroups',
+    method: 'post',
+    data
+  })
+}
+
 export const findProjects = (data) => {
   return axios.request({
     url: 'manageProject/find',

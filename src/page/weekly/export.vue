@@ -13,7 +13,7 @@
         <Option v-for="(item,index) in groupList" :value="item.group_id" :key="index">{{ item.group_name }}</Option>
       </Select>
     </p>
-    <p class="mgb-10">导出文件全名：{{fileName}}@{{weekRange}}.xlsx</p>
+    <p class="mgb-10">导出文件全名：{{fileName}}@{{groupName}}@{{weekRange}}.xlsx</p>
     <Button type="success" @click="exportExcel()">导出</Button>
   </div>
 </template>
@@ -29,11 +29,17 @@ import { getWeekRange } from '@/libs/myUtils'
 export default {
   data () {
     return {
-      fileName: '前端能开@技术栈 研发&工程人员周状态@2019周报@山西@前端1组',
+      fileName: '前端@技术栈 研发&工程人员周状态@2019周报',
       weekRange: getWeekRange(),
       rangeList: [getWeekRange(), getWeekRange(1), getWeekRange(2)],
-      groupId: '',
+      groupId: 0,
       groupList: [{ group_id: 0, group_name: '全部' }]
+    }
+  },
+  computed: {
+    groupName () {
+      let res = this.groupList.find(element => element.group_id === this.groupId)
+      return res.group_name
     }
   },
   mounted () {

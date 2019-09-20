@@ -286,7 +286,8 @@ export default {
         interest: [],
         assist: []
       },
-      length: 0
+      length: 0,
+      saveFlag: false
     }
   },
   computed: {
@@ -303,15 +304,31 @@ export default {
       console.log(this.formValidate)
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.saveFlag) {
+            this.$Message.warning('warning 请勿重复提交')
+            return
+          }
+          this.saveFlag = true
+          this.$Loading.start()
+          const msg = this.$Message.loading({
+            content: 'Loading...',
+            duration: 0
+          })
           saveReport(this.formValidate).then(res => {
+            msg()
             if (res.data.retCode === '000000') {
+              this.$Loading.finish()
               this.$Message.success('Success! 你输入的周报成功保存!')
             } else {
+              this.saveFlag = false
+              this.$Loading.error()
               this.$Message.error('Error！ 系统错误，保存失败，请联系管理员')
             }
           })
         } else {
-          this.$Message.error('Fail! 个人总结部分为必填内容，请检查是否有遗漏！')
+          this.saveFlag = false
+          this.$Loading.error()
+          this.$Message.error('Fail! 项目进度和个人总结部分为必填内容，请检查是否有遗漏！')
         }
       })
     },

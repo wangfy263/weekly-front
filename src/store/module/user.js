@@ -10,6 +10,8 @@ import {
   getUnreadCount
 } from '@/api/user'
 
+import { removeLocal } from '@/libs/baseUtil'
+
 export default {
   state: {
     userInfo: {},
@@ -84,6 +86,7 @@ export default {
           commit('setUserInfo', {})
           commit('setHasGetInfo', false)
           commit('setAccess', [])
+          removeLocal('tagNaveList')
           resolve()
         }).catch(err => {
           reject(err)

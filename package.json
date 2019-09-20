@@ -1,7 +1,7 @@
 {
-  "name": "iview-admin",
-  "version": "2.0.0",
-  "author": "Lison<lison.modern@gmail.com>",
+  "name": "weekly-front",
+  "version": "1.0.0",
+  "author": "wangfy263<wfy339095626@gmail.com>",
   "private": false,
   "scripts": {
     "dev": "vue-cli-service serve --open",
@@ -9,7 +9,8 @@
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "inspect": "vue-cli-service inspect > webpeck-inspect.js"
+    "inspect": "vue-cli-service inspect > webpeck-inspect.js",
+    "docker": "docker build -f docker/Dockerfile -t weekly-front:1.0 ."
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -23,6 +24,7 @@
     "iview": "^3.2.2",
     "iview-area": "^1.5.17",
     "js-cookie": "^2.2.0",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "simplemde": "^1.11.2",
     "sortablejs": "^1.7.0",

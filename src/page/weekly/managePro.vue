@@ -65,7 +65,7 @@
     </div>
   </div>
 </template>
-<style>
+<style scope>
     .manage-project .ivu-table .demo-table-info-row td{
         background-color: #2db7f5;
         color: #fff;
@@ -193,7 +193,11 @@ export default {
     findProjects () {
       findProjects().then(res => {
         if (res.data.retCode === '000000') {
-          this.projects = res.data.data
+          if (res.data.data.length > 0) {
+            this.projects = res.data.data.sort((a, b) => {
+              return a.staffNoteId.localeCompare(b.staffNoteId)
+            })
+          }
         } else {
           this.$Message.error('Error！ 系统错误，请联系管理员')
         }

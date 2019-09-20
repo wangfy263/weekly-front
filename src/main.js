@@ -41,6 +41,9 @@ Vue.prototype.$config = config
  */
 importDirective(Vue)
 Vue.directive('clickOutside', clickOutside)
+/**
+ * 初始化登录信息，权限
+ */
 store.dispatch('getEnums')
 store.dispatch('loadAccess').then(()=>{
   store.dispatch('getUserInfo').then(res => {

@@ -2,5 +2,7 @@
   "weekly": ["super_admin", "weekly_staff", "weekly_leader"],
   "fill": ["super_admin", "weekly_staff", "weekly_leader"],
   "export": ["super_admin", "weekly_leader"],
-  "manage_project": ["super_admin", "weekly_leader"]
+  "manage_project": ["super_admin", "weekly_leader"],
+  "manage": ["super_admin"],
+  "manageStaff": ["super_admin"]
 }

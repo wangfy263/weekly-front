@@ -36,7 +36,7 @@ const routerAccess = (routers, jsonAccess) => {
         item.meta.access = ['super_admin']
       }
     }
-    if (item.children && item.children.length > 1) {
+    if (item.children && item.children.length > 0) {
       item.children = routerAccess(item.children, jsonAccess)
     }
   })

@@ -45,7 +45,8 @@ export default [
         notCache: true,
         icon: 'md-home'
       },
-      component: () => import('@/page/single-page/home')
+      // component: () => import('@/page/single-page/home')
+      component: () => import('@/page/index/home')
     }]
   },
   {
@@ -73,6 +74,24 @@ export default [
         title: '周报导出'
       },
       component: () => import('@/page/weekly/export')
+    }]
+  },
+  {
+    path: '/manage',
+    name: 'manage',
+    component: Main,
+    meta: {
+      icon: 'md-list-box',
+      title: '系统管理'
+    },
+    children: [{
+      path: '/manageStaff',
+      name: 'manageStaff',
+      meta: {
+        icon: 'md-create',
+        title: '人员管理'
+      },
+      component: () => import('@/page/manage/staff')
     },
     {
       path: '/manage_project',

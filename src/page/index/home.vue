@@ -1,0 +1,166 @@
+<template>
+  <div>
+    <!-- <Row :gutter="20">
+      <i-col :xs="12" :md="8" :lg="4" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;padding-bottom: 10px;">
+        <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
+          <count-to :end="infor.count" count-class="count-style"/>
+          <p>{{ infor.title }}</p>
+        </infor-card>
+      </i-col>
+    </Row> -->
+    <Row :gutter="20">
+      <Col span="6" v-for="(item, index) in infoCardData" :key="index">
+        <Card :bordered="false">
+            <p slot="title"><Icon :type="item.icon"></Icon>{{item.title}}</p>
+            <a href="#" slot="extra" @click="currFlag = currFlag === item.group_id ? 0 : item.group_id ">
+                <Icon type="ios-loop-strong"></Icon>
+                {{ currFlag === item.group_id ? 'Hide' : 'Show'}}
+            </a>
+            <p>人数：{{item.sum}}</p>
+            <p>未提交周报：{{item.no}}</p>
+            <p>周报周期：{{weekRange}}</p>
+        </Card>
+      </Col>
+    </Row>
+    <Row style="margin-top:20px">
+      <Table :columns="proColumns" :data="currList"></Table>
+    </Row>
+  </div>
+</template>
+
+<script>
+// import InforCard from '_c/info-card'
+// import CountTo from '_c/count-to'
+// import { ChartPie, ChartBar } from '_c/charts'
+import { findStaff, noticeSomeone } from '@/api/manage'
+import { mapGetters } from 'vuex'
+import { getWeekRange } from '@/libs/myUtils'
+const icons = ['md-stats', 'md-star', 'md-snow', 'md-send']
+export default {
+  name: 'home',
+  // components: {
+  //   InforCard,
+  //   CountTo,
+  //   ChartPie,
+  //   ChartBar
+  // },
+  data () {
+    return {
+      allStaffs: [],
+      currList: [],
+      currFlag: 0,
+      infoCardData: [],
+      weekRange: getWeekRange(),
+      proColumns: [
+        {
+          title: '人员名称',
+          key: 'staff_name'
+        },
+        {
+          title: 'noteID',
+          key: 'staff_notes_id'
+        },
+        {
+          title: '归属分支',
+          key: 'branch_name'
+        },
+        {
+          title: '归属组别',
+          key: 'group_name'
+        },
+        {
+          title: '是否提交周报',
+          key: 'isSubmit',
+          render: (h, params) => {
+            return h('Tag', {
+              props: {
+                color: params.row.isSubmit === 0 ? 'green' : 'red'
+              }
+            }, params.row.isSubmit === 0 ? '已提交' : '未提交')
+          }
+        },
+        {
+          title: '操作',
+          key: 'action',
+          width: 100,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: params.row.isSubmit === 0 ? 'dashed' : 'warning',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    if (params.row.isSubmit !== 0) {
+                      this.notice(params.row)
+                    }
+                  }
+                }
+              }, '提醒')
+            ])
+          }
+        }
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'enumerates'
+    ])
+  },
+  mounted () {
+    this.findStaffs()
+  },
+  methods: {
+    findStaffs () {
+      findStaff().then(res => {
+        if (res && res.data && res.data.retCode === '000000') {
+          this.allStaffs = res.data.data
+          this.currList = this.allStaffs
+          let groups = this.enumerates.groupEnum
+          let mapInfo = {}
+          groups.forEach((element, index) => {
+            mapInfo[element.group_id] = {
+              title: element.group_name,
+              sum: 0,
+              no: 0,
+              group_id: element.group_id,
+              icon: icons[index]
+            }
+          })
+          res.data.data.forEach(item => {
+            mapInfo[item.group_id].sum = mapInfo[item.group_id].sum + 1
+          })
+          for (let key in mapInfo) {
+            this.infoCardData.push(mapInfo[key])
+          }
+        }
+      })
+    },
+    notice (staff) {
+      noticeSomeone({ email: staff.staff_email }).then(res => {
+        if (res.data.retCode === '000000') {
+          this.$Message.success('Success! 成功提醒' + staff.staff_name + '!')
+        }
+      })
+    }
+  },
+  watch: {
+    currFlag: function (newVal, oldVal) {
+      console.log('newVal:' + newVal)
+      if (newVal !== oldVal) {
+        this.currList = this.allStaffs.filter((item) => {
+          if (newVal === 0 || newVal === item.group_id) {
+            return item
+          }
+        })
+      }
+    }
+  }
+}
+</script>

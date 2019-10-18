@@ -1,9 +1,10 @@
 import axios from '@/libs/api.request'
 
-export const login = ({ userName, password }) => {
+export const login = ({ userName, password, captcha }) => {
   const data = {
     name: userName,
-    pwd: password
+    pwd: password,
+    captcha
   }
   return axios.request({
     url: 'login',
@@ -23,6 +24,13 @@ export const logout = (token) => {
   return axios.request({
     url: 'logout',
     method: 'post'
+  })
+}
+
+export const getCaptcha = () => {
+  return axios.request({
+    url: 'captcha',
+    method: 'get'
   })
 }
 

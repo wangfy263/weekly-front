@@ -14,12 +14,22 @@
         </span>
       </Input>
     </FormItem>
+    <FormItem prop="captcha">
+      <Input v-model="form.captcha" placeholder="请输入验证码">
+        <span slot="prepend">
+          <Icon :size="14" type="md-cloud-done"></Icon>
+        </span>
+        <span v-html="svg" slot="append" @click="getCaptcha()">
+        </span>
+      </Input>
+    </FormItem>
     <FormItem>
       <Button @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
   </Form>
 </template>
 <script>
+import { getCaptcha } from '@/api/user'
 export default {
   name: 'LoginForm',
   props: {
@@ -38,23 +48,37 @@ export default {
           { required: true, message: '密码不能为空', trigger: 'blur' }
         ]
       }
+    },
+    captchaRules: {
+      type: Array,
+      default: () => {
+        return [
+          { required: true, message: '验证码不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   data () {
     return {
       form: {
         userName: '',
-        password: ''
-      }
+        password: '',
+        captcha: ''
+      },
+      svg: null
     }
   },
   computed: {
     rules () {
       return {
         userName: this.userNameRules,
-        password: this.passwordRules
+        password: this.passwordRules,
+        captcha: this.captchaRules
       }
     }
+  },
+  created () {
+    this.getCaptcha()
   },
   methods: {
     handleSubmit () {
@@ -62,9 +86,17 @@ export default {
         if (valid) {
           this.$emit('on-success-valid', {
             userName: this.form.userName,
-            password: this.form.password
+            password: this.form.password,
+            captcha: this.form.captcha
           })
+        } else {
+          this.getCaptcha()
         }
+      })
+    },
+    getCaptcha () {
+      getCaptcha({}).then((res) => {
+        this.svg = res.data
       })
     }
   }

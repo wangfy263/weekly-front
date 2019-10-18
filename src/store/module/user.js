@@ -62,13 +62,10 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, { userName, password }) {
-      userName = userName.trim()
+    handleLogin ({ commit }, data) {
+      data.userName = data.userName.trim()
       return new Promise((resolve, reject) => {
-        login({
-          userName,
-          password
-        }).then(res => {
+        login(data).then(res => {
           if (res.data.retCode === '000000') {
             resolve()
           } else {

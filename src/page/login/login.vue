@@ -7,7 +7,7 @@
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
-          <login-form @on-success-valid="handleSubmit"></login-form>
+          <login-form @on-success-valid="handleSubmit" ref="loginForm"></login-form>
           <p class="login-tip">{{loginMsg}}</p>
         </div>
       </Card>
@@ -32,8 +32,8 @@ export default {
       'handleLogin',
       'getUserInfo'
     ]),
-    handleSubmit ({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
+    handleSubmit (data) {
+      this.handleLogin(data).then(res => {
         this.getUserInfo().then(res => {
           console.log(this.$config.homeName)
           this.$router.push({
@@ -42,12 +42,9 @@ export default {
         })
       }, err => {
         this.loginMsg = err
+        this.$refs.loginForm.getCaptcha()
       })
     }
   }
 }
 </script>
-
-<style>
-
-</style>

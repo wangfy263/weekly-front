@@ -45,12 +45,12 @@
             :rules="{required: true, message: '请选择负责人', trigger: 'change'}"
             >
               <Select v-model="formValidate.staff_id" placeholder="选择负责人">
-                  <Option value="1">wangfy</Option>
-                  <Option value="2">lihao_mios</Option>
+                  <Option :value="`${staff.staff_id}`" v-for="(staff, index) in allStaffs" :key="index">{{staff.staff_notes_id}}</Option>
+                  <!-- <Option value="2">lihao_mios</Option>
                   <Option value="3">liule</Option>
                   <Option value="4">chenrr_miso</Option>
                   <Option value="5">liyn_miso</Option>
-                  <Option value="7">liyh_mios</Option>
+                  <Option value="7">liyh_mios</Option> -->
               </Select>
           </FormItem>
         </Col>
@@ -111,6 +111,7 @@
 </style>
 <script>
 import { findProjects, saveProject, updateProject, deleteProject } from '@/api/weekly'
+import { findStaff } from '@/api/manage'
 import { mapGetters } from 'vuex'
 export default {
   data () {
@@ -172,6 +173,7 @@ export default {
       projects: [],
       oprTitle: '操作',
       isShow: false,
+      allStaffs: [],
       formValidate: {
         project_id: '',
         name: '',
@@ -188,6 +190,7 @@ export default {
   },
   mounted () {
     this.findProjects()
+    this.findStaffs()
   },
   methods: {
     findProjects () {
@@ -200,6 +203,13 @@ export default {
           }
         } else {
           this.$Message.error('Error！ 系统错误，请联系管理员')
+        }
+      })
+    },
+    findStaffs () {
+      findStaff().then(res => {
+        if (res && res.data && res.data.retCode === '000000') {
+          this.allStaffs = res.data.data
         }
       })
     },

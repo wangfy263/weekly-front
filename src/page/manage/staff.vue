@@ -101,6 +101,17 @@
               </Select>
           </FormItem>
         </Col>
+        <Col span="24">
+          <FormItem
+            prop="roles"
+            label="角色"
+            :rules="{ type: 'array', required: true, message: '请选择角色', trigger: 'change'}"
+            >
+              <Select v-model="formValidate.roles" multiple placeholder="选择角色">
+                   <Option :value="`${option.role_id}`" v-for="(option, index) in enumerates.roleEnum" :key="index">{{option.role_name}}</Option>
+              </Select>
+          </FormItem>
+        </Col>
       </Row>
       </Form>
     </Modal>
@@ -154,7 +165,7 @@
     }
 </style>
 <script>
-import { findStaff, saveStaff, updStaff, delStaff } from '@/api/manage'
+import { findStaff, saveStaff, updStaff, delStaff, findRoles } from '@/api/manage'
 import { mapGetters } from 'vuex'
 export default {
   data () {
@@ -226,7 +237,8 @@ export default {
         group_id: '',
         level_id: '',
         base_id: '',
-        type_id: ''
+        type_id: '',
+        roles: []
       }
     }
   },
@@ -289,8 +301,6 @@ export default {
       })
     },
     upd (item) {
-      this.modal1 = true
-      this.isSave = false
       this.formValidate.staff_id = item.staff_id
       this.formValidate.staff_name = item.staff_name
       this.formValidate.staff_notes_id = item.staff_notes_id
@@ -300,6 +310,17 @@ export default {
       this.formValidate.level_id = item.level_id + ''
       this.formValidate.base_id = item.base_id + ''
       this.formValidate.type_id = item.type_id + ''
+      findRoles({ staff_id: item.staff_id }).then(res => {
+        if (res.data.retCode === '000000') {
+          this.formValidate.roles = res.data.data.map((item) => {
+            return item.role_id + ''
+          })
+          this.modal1 = true
+          this.isSave = false
+        } else {
+          this.$Message.error('Error! 信息异常!')
+        }
+      })
     },
     del (id) {
       delStaff({ id }).then(res => {

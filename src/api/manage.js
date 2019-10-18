@@ -39,3 +39,11 @@ export const noticeSomeone = (data) => {
     method: 'post'
   })
 }
+
+export const findRoles = (data) => {
+  return axios.request({
+    url: '/findRoles',
+    data,
+    method: 'post'
+  })
+}

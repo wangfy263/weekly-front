@@ -8,6 +8,5 @@ export const getWeekRange = (lastN) => {
     start = moment().subtract(weekOfday - 1, 'days').subtract(lastN, 'weeks').format('MMDD')
     end = moment().add(7 - weekOfday, 'days').subtract(lastN, 'weeks').format('MMDD')
   }
-  console.log(`${start}-${end}`)
   return `${start}-${end}`
 }

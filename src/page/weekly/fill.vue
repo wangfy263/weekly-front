@@ -296,7 +296,6 @@ export default {
     ])
   },
   mounted () {
-    console.log(this.enumerates)
     this.findProject()
   },
   methods: {

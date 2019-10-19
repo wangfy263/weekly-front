@@ -48,7 +48,7 @@ export default {
   methods: {
     exportExcel () {
       this.$Spin.show()
-      let param = { fileName: this.fileName, week_range: this.weekRange }
+      let param = { fileName: this.fileName + '@' + this.groupName + '@' + this.weekRange, week_range: this.weekRange }
       if (this.groupId) {
         param.groupId = this.groupId
       }

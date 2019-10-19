@@ -74,6 +74,25 @@ export default [
         title: '周报导出'
       },
       component: () => import('@/page/weekly/export')
+    },
+    {
+      path: '/weeklyList',
+      name: 'weeklyList',
+      meta: {
+        icon: 'md-download',
+        title: '周报记录查询'
+      },
+      component: () => import('@/page/weekly/weeklyList')
+    },
+    {
+      path: '/weeklyDetail/:week',
+      name: 'weeklyDetail',
+      meta: {
+        title: '周报详情',
+        hideInBread: true,
+        hideInMenu: true
+      },
+      component: () => import('@/page/weekly/weeklyDetail')
     }]
   },
   {
@@ -100,7 +119,7 @@ export default [
         icon: 'ios-albums-outline',
         title: '团队所辖项目管理'
       },
-      component: () => import('@/page/weekly/managePro')
+      component: () => import('@/page/manage/managePro')
     }]
   }
 ]

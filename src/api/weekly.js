@@ -63,3 +63,19 @@ export const deleteProject = (data) => {
     data
   })
 }
+
+export const findWeekly = (data) => {
+  return axios.request({
+    url: '/findWeeklys',
+    method: 'post',
+    data
+  })
+}
+
+export const findWeeklyDetail = (data) => {
+  return axios.request({
+    url: '/findWeeklyDetail',
+    method: 'post',
+    data
+  })
+}

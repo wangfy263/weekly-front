@@ -93,6 +93,16 @@ export default [
         hideInMenu: true
       },
       component: () => import('@/page/weekly/weeklyDetail')
+    },
+    {
+      path: '/weeklyDetail/:groupId/:week',
+      name: 'preview',
+      meta: {
+        title: '周报详情',
+        hideInBread: true,
+        hideInMenu: true
+      },
+      component: () => import('@/page/weekly/weeklyDetail')
     }]
   },
   {

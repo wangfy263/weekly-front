@@ -15,6 +15,7 @@
     </p>
     <p class="mgb-10">导出文件全名：{{fileName}}@{{groupName}}@{{weekRange}}.xlsx</p>
     <Button type="success" @click="exportExcel()">导出</Button>
+    <Button type="info" @click="preview()" style="margin-left: 20px">预览</Button>
   </div>
 </template>
 <style scoped>
@@ -68,6 +69,9 @@ export default {
           this.groupList = this.groupList.concat(res.data.data)
         }
       })
+    },
+    preview () {
+      this.$router.push({ path: `/weeklyDetail/${this.groupId}/${this.weekRange}` })
     }
   }
 }

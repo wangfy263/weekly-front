@@ -128,7 +128,7 @@ export default {
             },
             {
               title: '预计投入(人天)',
-              width: 100,
+              width: 200,
               key: 'interest_cost'
             },
             {
@@ -175,13 +175,20 @@ export default {
   },
   created () {
     this.week = this.$route.params.week
+    this.groupId = this.$route.params.groupId
   },
   mounted () {
     this.findfindWeeklyDetail()
   },
   methods: {
     findfindWeeklyDetail () {
-      findWeeklyDetail({ week: this.week }).then(res => {
+      let param = {
+        week: this.week
+      }
+      if (this.groupId) {
+        param.group_id = parseInt(this.groupId)
+      }
+      findWeeklyDetail(param).then(res => {
         if (res.data.retCode === '000000') {
           this.pros = res.data.data[0]
           this.sums = res.data.data[1]

@@ -141,7 +141,7 @@ export default {
       ],
       assistColumns: [
         {
-          title: '5、前端能开协助部分',
+          title: '5、前端协助部分',
           align: 'left',
           children: [
             {

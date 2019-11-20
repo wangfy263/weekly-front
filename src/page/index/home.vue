@@ -8,20 +8,44 @@
         </infor-card>
       </i-col>
     </Row> -->
-    <Row :gutter="20">
-      <Col span="6" v-for="(item, index) in infoCardData" :key="index">
-        <Card :bordered="false">
-            <p slot="title"><Icon :type="item.icon"></Icon>{{item.title}}</p>
-            <a href="#" slot="extra" @click="currFlag = currFlag === item.group_id ? 0 : item.group_id ">
-                <Icon type="ios-loop-strong"></Icon>
-                {{ currFlag === item.group_id ? 'Hide' : 'Show'}}
-            </a>
-            <p>人数：{{item.sum}}</p>
-            <p>未提交周报：{{item.no}}</p>
-            <p>周报周期：{{weekRange}}</p>
-        </Card>
-      </Col>
-    </Row>
+    <Card title="所有分组">
+      <p slot="title">
+          <Icon type="ios-film-outline"></Icon>
+          Teams 所有团队
+      </p>
+      <a href="#" slot="extra" @click.prevent="oprFlag = !oprFlag">
+          <Icon type="ios-loop-strong"></Icon>
+          {{oprFlag ? '收起' : '展开'}}
+      </a>
+      <Row :gutter="20">
+        <Col span="6" v-for="(item, index) in infoCardData" :key="index">
+          <Card :bordered="false" v-if="index < 4">
+              <p slot="title"><Icon :type="item.icon"></Icon>{{item.title}}</p>
+              <a href="#" slot="extra" @click="currFlag = currFlag === item.group_id ? 0 : item.group_id ">
+                  <Icon type="ios-loop-strong"></Icon>
+                  {{ currFlag === item.group_id ? 'Hide' : 'Show'}}
+              </a>
+              <p>人数：{{item.sum}}</p>
+              <p>未提交周报：{{item.no}}</p>
+              <p>周报周期：{{weekRange}}</p>
+          </Card>
+        </Col>
+      </Row>
+      <Row :gutter="20" style="margin-top:20px" v-show="oprFlag">
+        <Col span="6" v-for="(item, index) in infoCardData" :key="index">
+          <Card :bordered="false" v-if="index > 3">
+              <p slot="title"><Icon :type="item.icon"></Icon>{{item.title}}</p>
+              <a href="#" slot="extra" @click="currFlag = currFlag === item.group_id ? 0 : item.group_id ">
+                  <Icon type="ios-loop-strong"></Icon>
+                  {{ currFlag === item.group_id ? 'Hide' : 'Show'}}
+              </a>
+              <p>人数：{{item.sum}}</p>
+              <p>未提交周报：{{item.no}}</p>
+              <p>周报周期：{{weekRange}}</p>
+          </Card>
+        </Col>
+      </Row>
+    </Card>
     <Row style="margin-top:20px">
       <Table :columns="proColumns" :data="currList"></Table>
     </Row>
@@ -46,6 +70,7 @@ export default {
   // },
   data () {
     return {
+      oprFlag: false,
       allStaffs: [],
       currList: [],
       currFlag: 0,
@@ -53,7 +78,7 @@ export default {
       weekRange: getWeekRange(),
       proColumns: [
         {
-          title: '人员名称',
+          title: '姓名',
           key: 'staff_name'
         },
         {

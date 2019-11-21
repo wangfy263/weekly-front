@@ -1,13 +1,11 @@
 <template>
   <div>
-    <!-- <Row :gutter="20">
-      <i-col :xs="12" :md="8" :lg="4" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;padding-bottom: 10px;">
-        <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
-          <count-to :end="infor.count" count-class="count-style"/>
-          <p>{{ infor.title }}</p>
-        </infor-card>
-      </i-col>
-    </Row> -->
+    <!-- <Card style="width:100%">
+      <div style="text-align:left;">
+        <img src="@/assets/images/fe-logo.jpg" style="width:100px;vertical-align:middle;">
+        {{userInfo.staff_name}}
+      </div>
+    </Card> -->
     <Card title="所有分组">
       <p slot="title">
           <Icon type="ios-film-outline"></Icon>
@@ -135,7 +133,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'enumerates'
+      'enumerates', 'userInfo'
     ])
   },
   mounted () {

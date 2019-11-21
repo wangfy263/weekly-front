@@ -1,7 +1,7 @@
 <template>
   <div>
     <Form ref="formValidate" :model="formValidate" :label-width="120" label-position="left" inline>
-    <Row v-show="formValidate.project.length > 0">
+    <Row>
         <Card :bordered="false">
             <p slot="title">参与项目情况 <Icon type="ios-add-circle-outline" size="20" @click="addContent('project')"/></p>
             <p v-for="(item, index) in formValidate.project"

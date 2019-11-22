@@ -39,7 +39,7 @@
                     :prop="'project.' + index + '.name'"
                     :rules="{required: true, message: '请输入项目名称', trigger: 'change'}"
                     >
-                      <Input v-model="item.name" placeholder="输入项目名称" :maxlength="20" :disabled="index<length"/>
+                      <Input v-model="item.name" placeholder="输入项目名称" :maxlength="100" :disabled="index<length"/>
                   </FormItem>
                 </Col>
                 <Col span="12">
@@ -81,7 +81,7 @@
                   label="项目名称"
                   :prop="'summarize.' + index + '.project_name'"
                   :rules="{required: true, message: '请选择分支', trigger: 'change'}">
-                    <Input v-model="item.project_name" placeholder="输入项目名称" :maxlength="20"/>
+                    <Input v-model="item.project_name" placeholder="输入项目名称" :maxlength="100"/>
                 </FormItem>
                 </Col>
                 <Col span="12">
@@ -373,7 +373,7 @@ export default {
       }
     },
     del (key) {
-      if (key === 'project' && this.formValidate.project.length > 1) {
+      if (key === 'project' && this.formValidate.project.length > 0) {
         this.formValidate.project.pop()
       }
       if (key === 'summarize' && this.formValidate.summarize.length > 1) {

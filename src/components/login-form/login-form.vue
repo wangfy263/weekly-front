@@ -24,7 +24,10 @@
       </Input>
     </FormItem>
     <FormItem>
-      <Button @click="handleSubmit" type="primary" long>登录</Button>
+      <Button @click="handleSubmit" type="primary" :loading="loading" long>
+        <span v-if="!loading">登录</span>
+        <span v-else>Loading...</span>
+      </Button>
     </FormItem>
   </Form>
 </template>
@@ -65,7 +68,8 @@ export default {
         password: '',
         captcha: ''
       },
-      svg: null
+      svg: null,
+      loading: false
     }
   },
   computed: {
@@ -82,6 +86,7 @@ export default {
   },
   methods: {
     handleSubmit () {
+      this.loading = true
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
@@ -92,6 +97,7 @@ export default {
         } else {
           this.getCaptcha()
         }
+        this.loading = false
       })
     },
     getCaptcha () {

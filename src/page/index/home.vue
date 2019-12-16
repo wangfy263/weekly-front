@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- <Card style="width:100%">
-      <div style="text-align:left;">
-        <img src="@/assets/images/fe-logo.jpg" style="width:100px;vertical-align:middle;">
-        {{userInfo.staff_name}}
-      </div>
-    </Card> -->
     <Card title="所有分组">
       <p slot="title">
           <Icon type="ios-film-outline"></Icon>
@@ -158,6 +152,12 @@ export default {
           })
           res.data.data.forEach(item => {
             mapInfo[item.group_id].sum = mapInfo[item.group_id].sum + 1
+            if (item.isSubmit) {
+              mapInfo[item.group_id].no = mapInfo[item.group_id].no + 1
+            }
+            if (item.staff_id === this.userInfo.staff_id) {
+              this.$store.commit('setIsSubmit', item.isSubmit)
+            }
           })
           for (let key in mapInfo) {
             this.infoCardData.push(mapInfo[key])

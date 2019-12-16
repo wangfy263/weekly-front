@@ -23,6 +23,7 @@
           <div class="tag-nav-wrapper">
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
+          <header-card></header-card>
           <Content class="content-wrapper">
             <keep-alive :include="cacheList">
               <router-view/>
@@ -37,6 +38,7 @@
 <script>
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
+import HeaderCard from './components/header-card'
 import TagsNav from './components/tags-nav'
 import User from './components/user'
 import ABackTop from './components/a-back-top'
@@ -56,6 +58,7 @@ export default {
   components: {
     SideMenu,
     HeaderBar,
+    HeaderCard,
     Language,
     TagsNav,
     Fullscreen,
@@ -75,6 +78,9 @@ export default {
     ...mapGetters([
       'errorCount'
     ]),
+    path () {
+      return this.$route.path === '/home'
+    },
     tagNavList () {
       return this.$store.state.app.tagNavList
     },

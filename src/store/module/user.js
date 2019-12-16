@@ -17,6 +17,7 @@ export default {
     userInfo: {},
     access: '',
     hasGetInfo: false,
+    isSubmit: 0,
     unreadCount: 0,
     messageUnreadList: [],
     messageReadedList: [],
@@ -32,6 +33,9 @@ export default {
     },
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
+    },
+    setIsSubmit (state, status) {
+      state.isSubmit = status
     },
     setMessageCount (state, count) {
       state.unreadCount = count
@@ -59,7 +63,8 @@ export default {
     messageUnreadCount: state => state.messageUnreadList.length,
     messageReadedCount: state => state.messageReadedList.length,
     messageTrashCount: state => state.messageTrashList.length,
-    userInfo: state => state.userInfo
+    userInfo: state => state.userInfo,
+    isSubmit: state => state.isSubmit
   },
   actions: {
     // 登录

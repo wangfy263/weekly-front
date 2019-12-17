@@ -138,25 +138,33 @@ export default {
       findStaff().then(res => {
         if (res && res.data && res.data.retCode === '000000') {
           this.allStaffs = res.data.data
-          this.currList = this.allStaffs
+          this.currList = this.allStaffs.filter(item => {
+            if (item.group_id !== 7) {
+              return item
+            }
+          })
           let groups = this.enumerates.groupEnum
           let mapInfo = {}
           groups.forEach((element, index) => {
-            mapInfo[element.group_id] = {
-              title: element.group_name,
-              sum: 0,
-              no: 0,
-              group_id: element.group_id,
-              icon: icons[index]
+            if (element.group_type === 0) { // 管理组不显示在首页
+              mapInfo[element.group_id] = {
+                title: element.group_name,
+                sum: 0,
+                no: 0,
+                group_id: element.group_id,
+                icon: icons[index]
+              }
             }
           })
-          res.data.data.forEach(item => {
-            mapInfo[item.group_id].sum = mapInfo[item.group_id].sum + 1
-            if (item.isSubmit) {
-              mapInfo[item.group_id].no = mapInfo[item.group_id].no + 1
-            }
-            if (item.staff_id === this.userInfo.staff_id) {
-              this.$store.commit('setIsSubmit', item.isSubmit)
+          this.currList.forEach(item => {
+            if (mapInfo[item.group_id]) { // 管理组成员不填写周报，无需提醒，因此无需显示；
+              mapInfo[item.group_id].sum = mapInfo[item.group_id].sum + 1
+              if (item.isSubmit) {
+                mapInfo[item.group_id].no = mapInfo[item.group_id].no + 1
+              }
+              if (item.staff_id === this.userInfo.staff_id) {
+                this.$store.commit('setIsSubmit', item.isSubmit)
+              }
             }
           })
           for (let key in mapInfo) {

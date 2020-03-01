@@ -332,7 +332,7 @@ export default {
       })
     },
     addContent (key) {
-      if (key === 'project' && this.formValidate.project.length < 5) {
+      if (key === 'project' && this.formValidate.project.length < 10) {
         this.formValidate.project.push({
           type: '',
           branch: '',
@@ -341,7 +341,7 @@ export default {
           next_work: ''
         })
       }
-      if (key === 'summarize' && this.formValidate.summarize.length < 5) {
+      if (key === 'summarize' && this.formValidate.summarize.length < 10) {
         this.formValidate.summarize.push({
           project_name: '',
           work_type: '',
@@ -349,13 +349,13 @@ export default {
           next_weekly_work: ''
         })
       }
-      if (key === 'output' && this.formValidate.output.length < 5) {
+      if (key === 'output' && this.formValidate.output.length < 10) {
         this.formValidate.output.push({
           article_name: '',
           article_url: ''
         })
       }
-      if (key === 'interest' && this.formValidate.interest.length < 5) {
+      if (key === 'interest' && this.formValidate.interest.length < 10) {
         this.formValidate.interest.push({
           module: '',
           technic: '',
@@ -363,7 +363,7 @@ export default {
           mouth: 0
         })
       }
-      if (key === 'assist' && this.formValidate.assist.length < 5) {
+      if (key === 'assist' && this.formValidate.assist.length < 10) {
         this.formValidate.assist.push({
           branch_id: 0,
           group_id: 0,

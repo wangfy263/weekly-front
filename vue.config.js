@@ -42,8 +42,8 @@ module.exports = {
     port: '8090',
     proxy: {
       '/staff': {
-        // target: 'http://47.104.199.74:8002'
-        target: 'http://localhost:8002'
+        target: 'http://47.104.199.74:8002'
+        // target: 'http://localhost:8002'
       }
     }
   }
